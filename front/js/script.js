@@ -14,18 +14,18 @@ function getProducts() {
     });
 }
 
-//Je dois afficher la liste des produits reçus
+// Je dois afficher la liste des produits reçus
 function displayProducts(products) {
   console.table(products);
   for (let product in products) {
     const itemsSection = document.getElementById("items");
 
-    //Création "élément <a>"
+    // Création "élément <a>"
     let productLink = document.createElement("a");
     itemsSection.appendChild(productLink);
     productLink.href = `product.html?id=${products[product]._id}`;
 
-    //Création "élément <article>"
+    // Création "élément <article>"
     let productArticle = document.createElement("article");
     productLink.appendChild(productArticle);
 
