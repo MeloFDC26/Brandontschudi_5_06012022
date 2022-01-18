@@ -120,7 +120,7 @@ function addToCart(article) {
           localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
           console.table(produitLocalStorage);
           popupConfirmation();
-          //Si le produit commandé n'est pas dans le panier
+        //Si le produit commandé n'est pas dans le panier
         } else {
           produitLocalStorage.push(optionsProduit);
           localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
