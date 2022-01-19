@@ -1,10 +1,10 @@
 console.log("Produit");
-var str = window.location.href;
-var url = new URL(str);
-var idProduct = url.searchParams.get("id");
+const str = window.location.href;
+const url = new URL(str);
+const idProduct = url.searchParams.get("id");
 console.log(idProduct);
 
-let article = "";
+let article;
 
 const colorPicked = document.querySelector("#colors");
 const quantityPicked = document.querySelector("#quantity");
@@ -39,23 +39,23 @@ function getPost(article) {
 
   // On modifie le titre 'h1'
   let productName = document.getElementById("title");
-  productName.innerHTML = article.name;
+  productName.innerText = article.name;
 
   // On modifie le prix
   let productPrice = document.getElementById("price");
-  productPrice.innerHTML = article.price;
+  productPrice.innerText = article.price;
 
   // On modifie la description
   let productDescription = document.getElementById("description");
-  productDescription.innerHTML = article.description;
+  productDescription.innerText = article.description;
 
   // Boucle pour les options de couleurs
-  for (let colors of article.colors) {
-    console.table(colors);
-    let productColors = document.createElement("option");
-    document.querySelector("#colors").appendChild(productColors);
-    productColors.value = colors;
-    productColors.innerHTML = colors;
+  for (let color of article.colors) {
+    console.table(color);
+    let productColor = document.createElement("option");
+    document.querySelector("#colors").appendChild(productColor);
+    productColor.value = color;
+    productColor.innerText = color;
   }
 
   addToCart(article);
@@ -70,26 +70,13 @@ function addToCart(article) {
   btn_envoyerPanier.addEventListener("click", (event) => {
     if (
       quantityPicked.value > 0 &&
-      quantityPicked.value <= 100 &&
-      quantityPicked.value != 0
+      quantityPicked.value <= 100
     ) {
       //Recupération du choix de la couleur
       let choixCouleur = colorPicked.value;
 
       //Recupération du choix de la quantité
       let choixQuantite = quantityPicked.value;
-
-      //Récupération des options de l'article à ajouter au panier
-      let optionsProduit = {
-        idProduit: idProduct,
-        couleurProduit: choixCouleur,
-        quantiteProduit: Number(choixQuantite),
-        nomProduit: article.name,
-        prixProduit: article.price,
-        descriptionProduit: article.description,
-        imgProduit: article.imageUrl,
-        altImgProduit: article.altTxt,
-      };
 
       //Initialisation du local storage
       let produitLocalStorage = JSON.parse(localStorage.getItem("produit"));
