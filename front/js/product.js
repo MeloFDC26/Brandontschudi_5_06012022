@@ -109,7 +109,7 @@ function addToCart(article) {
           popupConfirmation();
         //Si le produit commandé n'est pas dans le panier
         } else {
-          produitLocalStorage.push(optionsProduit);
+          produitLocalStorage.push(article);
           localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
           console.table(produitLocalStorage);
           popupConfirmation();
@@ -117,7 +117,7 @@ function addToCart(article) {
         //Si le panier est vide
       } else {
         produitLocalStorage = [];
-        produitLocalStorage.push(optionsProduit);
+        produitLocalStorage.push(article);
         localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
         console.table(produitLocalStorage);
         popupConfirmation();
