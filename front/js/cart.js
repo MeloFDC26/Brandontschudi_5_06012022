@@ -47,7 +47,7 @@ function getCart(){
             // Création de p (couleur) dans "cart__item__content__description"
             let productCartColor = document.createElement("p");
             productCartContent.appendChild(productCartColor);
-            productCartColor.innerText = produit.color;
+            productCartColor.innerText = produit.couleurProduit;
 
             // Création de p (prix) dans "cart__item__content__description"
             let productCartPrice = document.createElement("p");
@@ -77,7 +77,7 @@ function getCart(){
             productCartInputQte.setAttribute("name", "itemQuantity");
             productCartInputQte.setAttribute("min", "1");
             productCartInputQte.setAttribute("max", "100");
-            productCartInputQte.setAttribute("value", "42");
+            productCartInputQte.setAttribute("value", produit.quantiteProduit);
 
             // Création de la div "cart__item__content__settings__delete"
             let productCartDivDelete = document.createElement("div");
@@ -93,3 +93,19 @@ function getCart(){
     }
 }
 getCart();
+
+// Récupération des valeurs totales (quantité et prix)
+function getTotals(){
+
+    // Total quantité
+    let articleQte = document.getElementsByClassName("itemQuantity");  //Valeur de l'input
+    let articleQteLength = articleQte.length; //Nombre d'articles dans le [local storage]
+    quantiteTotal = 0; //On initialise 'quantiteTotal' sur 0 pour l'addition
+    for (let i = 0; i < articleQteLength; ++i) { //Boucle pour additionner le nombre d'articles dans [local storage]
+        quantiteTotal += articleQte[i].valueAsNumber; //Quantité totale (=0) + nombre d'articles = Quantité totale
+    }
+    let productCartTotalQuantity = document.getElementById('totalQuantity'); //On récupère l'élément '#totalQuantity' dans le HTML
+    productCartTotalQuantity.innerText = quantiteTotal; //Et on modifie le texte dans #totalQuantity par le résultat de l'addition
+    console.log(quantiteTotal);
+}
+getTotals();
