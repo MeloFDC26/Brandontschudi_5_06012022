@@ -64,10 +64,10 @@ function getPost(article) {
 
 //Gestion du panier
 function addToCart(article) {
-  const btn_envoyerPanier = document.querySelector("#addToCart");
+  const btnEnvoyerPanier = document.querySelector("#addToCart");
 
   //Ecouter le panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
-  btn_envoyerPanier.addEventListener("click", (event) => {
+  btnEnvoyerPanier.addEventListener("click", (event) => {
     if (
       quantityPicked.value > 0 &&
       quantityPicked.value <= 100
