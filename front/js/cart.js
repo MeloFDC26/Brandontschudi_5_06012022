@@ -170,3 +170,83 @@ function productCartDelete(){
     }
 }
 productCartDelete();
+
+//Validation du formulaire avec RegExp
+function onSubmit(){ 
+    let form = document.querySelector(".cart__order__form");
+
+    //firstName et LastName on veut 2 caractères min sans caractères spéciaux ni chiffres
+    const firstLastNamesRegex = new RegExp("^[a-zA-Z ,.'-]+$");
+    const firstNameValue = document.getElementById("firstName");
+    form.firstName.addEventListener('change', function() {
+        validFirstName(this);
+    });
+    const validFirstName = function(firstNameValue) {
+        let firstNameErrorMsg = firstNameValue.nextElementSibling;
+
+        if (firstLastNamesRegex.test(firstNameValue.value)) {
+            firstNameErrorMsg.innerHTML = '';
+        } else {
+            firstNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+    const lastNameValue = document.getElementById("lastName");
+    form.lastName.addEventListener('change', function() {
+        validLastName(this);
+    });
+    const validLastName = function(lastNameValue) {
+        let lastNameErrorMsg = lastNameValue.nextElementSibling;
+
+        if (firstLastNamesRegex.test(lastNameValue.value)) {
+            lastNameErrorMsg.innerHTML = '';
+        } else {
+            lastNameErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+
+    //Adresse et Ville = que ce ne soit pas vide
+    let addressCityRegex = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+    const addressValue = document.getElementById("address");
+    form.address.addEventListener('change', function() {
+        validAddress(this);
+    });
+    const validAddress = function(addressValue) {
+        let addressErrorMsg = addressValue.nextElementSibling;
+
+        if (addressCityRegex.test(addressValue.value)) {
+            addressErrorMsg.innerHTML = '';
+        } else {
+            addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+    const cityNameValue = document.getElementById("city");
+    form.city.addEventListener('change', function() {
+        validCity(this);
+    });
+    const validCityNameResult = function(cityNameValue) {
+        let cityNameResultErrorMsg = cityNameValue.nextElementSibling;
+
+        if (addressCityRegex.test(cityNameValue.value)) {
+            cityNameResultErrorMsg.innerHTML = '';
+        } else {
+            cityNameResultErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+    
+    //Adresse mail = qu'elle soit valide
+    const emailValue = document.getElementById("email");
+    let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
+      form.email.addEventListener('change', function() {
+        validEmail(this);
+    });
+    const validEmailResult = function(emailValue) {
+        let emailResultErrorMsg = emailValue.nextElementSibling;
+
+        if (emailRegExp.test(emailValue.value)) {
+            emailResultErrorMsg.innerHTML = '';
+        } else {
+            emailResultErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
+        }
+    };
+}
+onSubmit();
