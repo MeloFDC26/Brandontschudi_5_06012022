@@ -205,7 +205,7 @@ function onSubmit(){
     };
 
     //Adresse et Ville = que ce ne soit pas vide
-    let addressCityRegex = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
+    let addressRegex = new RegExp("^[0-9]{1,3}(?:(?:[,. ]){1}[-a-zA-Zàâäéèêëïîôöùûüç]+)+");
     const addressValue = document.getElementById("address");
     form.address.addEventListener('change', function() {
         validAddress(this);
@@ -213,33 +213,34 @@ function onSubmit(){
     const validAddress = function(addressValue) {
         let addressErrorMsg = addressValue.nextElementSibling;
 
-        if (addressCityRegex.test(addressValue.value)) {
+        if (addressRegex.test(addressValue.value)) {
             addressErrorMsg.innerHTML = '';
         } else {
             addressErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
         }
     };
+    let cityRegex = new RegExp(/^[a-zA-Z\u0080-\u024F\s\/\-\)\(\`\.\"\']+$/); 
     const cityNameValue = document.getElementById("city");
     form.city.addEventListener('change', function() {
         validCity(this);
     });
-    const validCityNameResult = function(cityNameValue) {
+    const validCity = function(cityNameValue) {
         let cityNameResultErrorMsg = cityNameValue.nextElementSibling;
 
-        if (addressCityRegex.test(cityNameValue.value)) {
+        if (cityRegex.test(cityNameValue.value)) {
             cityNameResultErrorMsg.innerHTML = '';
         } else {
             cityNameResultErrorMsg.innerHTML = 'Veuillez renseigner ce champ.';
         }
     };
-    
+
     //Adresse mail = qu'elle soit valide
     const emailValue = document.getElementById("email");
     let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$');
       form.email.addEventListener('change', function() {
         validEmail(this);
     });
-    const validEmailResult = function(emailValue) {
+    const validEmail = function(emailValue) {
         let emailResultErrorMsg = emailValue.nextElementSibling;
 
         if (emailRegExp.test(emailValue.value)) {
@@ -250,3 +251,55 @@ function onSubmit(){
     };
 }
 onSubmit();
+
+// Envoi des informations saisies dans le formulaire après vérification RegExp
+function getPost(){
+    const btnCommanderPanier = document.getElementById("order"); //On récupère l'id #order
+    btnCommanderPanier.addEventListener('click', (event) => { // On écoute le "click" sur le bouton 'commander'
+        
+        //Récupération des coordonnées du formulaire client
+        let firstNameValue = document.getElementById('firstName');
+        let lastNameValue = document.getElementById('lastName');
+        let addressValue = document.getElementById('address');
+        let cityNameValue = document.getElementById('city');
+        let emailValue = document.getElementById('email');
+
+        let idProducts = []; // On Crée un tableau (array) appelé 'idProducts' dans [local storage]
+        for (let p = 0; p < produitLocalStorage.length; p++){ //Boucle pour pousser les informations dans [local storage]
+            idProducts.push(produitLocalStorage[p]._id); //On pousse les infos "idProducts" sur [local storage]
+        };
+        console.log(idProducts);
+
+        const order = {
+            contact : {
+                firstName: firstNameValue.value,
+                lastName: lastNameValue.value,
+                address: addressValue.value,
+                city: cityNameValue.value,
+                email: emailValue.value,
+            },
+            products: idProducts,} 
+        const options = {
+            method: 'POST',
+            body: JSON.stringify(order),
+            headers: {
+                'Accept': 'application/json', 
+                "Content-Type": "application/json" 
+            },
+        };
+        
+        fetch("http://localhost:3000/api/products/order", options)
+        .then((response) => response.json())
+        .then((data) => {
+            console.table(data);
+            localStorage.clear();
+            localStorage.setItem("orderId", data.orderId);
+
+            document.location.href = "confirmation.html";
+        })
+        .catch((err) => {
+            alert ("Problème avec fetch : " + err.message);
+        });
+    });
+}
+getPost();
