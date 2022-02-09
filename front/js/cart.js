@@ -2,7 +2,6 @@ console.log("Cart");
 
 // Initialisation du local storage
 let produitLocalStorage = JSON.parse(localStorage.getItem("produit") || "[]");
-console.table(produitLocalStorage);
 
 // Si le panier est vide
 function getCart() {
@@ -10,7 +9,6 @@ function getCart() {
     const emptyCart = `<p>Le panier est vide</p>`;
     const positionEmptyCart = document.getElementById("cart__items");
     positionEmptyCart.innerHTML = emptyCart;
-    console.log(emptyCart);
   }
   // Si au moins un article est dans le panier
   else {
@@ -107,7 +105,6 @@ function getTotals() {
   }
   let productCartTotalQuantity = document.getElementById("totalQuantity"); //On récupère l'élément '#totalQuantity' dans le HTML
   productCartTotalQuantity.innerText = quantityTotal; //Et on modifie le texte dans #totalQuantity par le résultat de l'addition
-  console.log(quantityTotal);
 
   // Prix total du panier
   totalPrice = 0; //On initialise 'totalPrice' sur 0 pour les additions
@@ -143,7 +140,6 @@ function modifQuantity() {
       produitLocalStorage[r].quantiteProduit = resultFind.quantiteProduit; // On modifie la quantité dans le [local storage]
 
       localStorage.setItem("produit", JSON.stringify(produitLocalStorage)); //On met à jour le [local storage]
-      console.log(quantityModif);
 
       // refresh rapide pour afficher instantanément le résultat (quantité et prix totaux)
       location.reload();

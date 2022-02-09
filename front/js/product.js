@@ -2,7 +2,6 @@ console.log("Produit");
 const str = window.location.href;
 const url = new URL(str);
 const idProduct = url.searchParams.get("id");
-console.log(idProduct);
 
 let article;
 
@@ -19,7 +18,6 @@ function getArticle() {
     })
     .then(async function (resultatAPI) {
       article = await resultatAPI;
-      console.table(article);
       if (article) {
         getPost(article);
       }
@@ -51,7 +49,6 @@ function getPost(article) {
 
   // Boucle pour les options de couleurs
   for (let color of article.colors) {
-    console.table(color);
     let productColor = document.createElement("option");
     document.querySelector("#colors").appendChild(productColor);
     productColor.value = color;
@@ -101,7 +98,6 @@ function addToCart(article) {
           let newQuantite = parseInt(choixQuantite) + parseInt(resultFind.quantiteProduit);
           resultFind.quantiteProduit = newQuantite;
           localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-          console.table(produitLocalStorage);
           popupConfirmation();
         //Si le produit commandé n'est pas dans le panier
         } else {
@@ -111,7 +107,6 @@ function addToCart(article) {
             ...article
           });
           localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-          console.table(produitLocalStorage);
           popupConfirmation();
         }
       //Si le panier est vide
@@ -123,7 +118,6 @@ function addToCart(article) {
           ...article
         });
         localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
-        console.table(produitLocalStorage);
         popupConfirmation();
       }
     }

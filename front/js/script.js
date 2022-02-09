@@ -16,7 +16,6 @@ function getProducts() {
 
 // Je dois afficher la liste des produits reçus
 function displayProducts(products) {
-  console.table(products);
   for (let product in products) {
     const itemsSection = document.getElementById("items");
 
