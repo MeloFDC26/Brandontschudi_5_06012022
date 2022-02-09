@@ -186,6 +186,7 @@ function onSubmit(event) {
     adress: true,
     city: true,
   };
+  
   //firstName et LastName on veut 2 caractères min sans caractères spéciaux ni chiffres
   const firstLastNamesRegex = 
     /^[a-zA-Z-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/
@@ -197,7 +198,7 @@ function onSubmit(event) {
     firstNameErrorMsg.innerText = "";
     formValidation.first = true;
   } else {
-    firstNameErrorMsg.innerText = "Veuillez renseigner ce champ.";
+    firstNameErrorMsg.innerText = "Veuillez renseigner 2 caractères au moins, sans chiffres.";
     formValidation.first = false;
   }
   const lastNameValue = document.getElementById("lastName");
@@ -207,7 +208,7 @@ function onSubmit(event) {
     lastNameErrorMsg.innerText = "";
     formValidation.last = true;
   } else {
-    lastNameErrorMsg.innerText = "Veuillez renseigner ce champ.";
+    lastNameErrorMsg.innerText = "Veuillez renseigner 2 caractères au moins, sans chiffres.";
     formValidation.last = false;
   }
 
@@ -219,20 +220,20 @@ function onSubmit(event) {
   let addressErrorMsg = addressValue.nextElementSibling;
 
   if (addressRegex.test(addressValue.value)) {
-    addressErrorMsg.innerHTML = "";
+    addressErrorMsg.innerText = "";
     formValidation.adress = true;
   } else {
-    addressErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    addressErrorMsg.innerText = "Veuillez renseigner une adresse valide. ex: 2 rue Pierre Julien";
     formValidation.adress = false;
   }
   const cityNameValue = document.getElementById("city");
   let cityNameResultErrorMsg = cityNameValue.nextElementSibling;
 
   if (firstLastNamesRegex.test(cityNameValue.value)) {
-    cityNameResultErrorMsg.innerHTML = "";
+    cityNameResultErrorMsg.innerText = "";
     formValidation.city = true;
   } else {
-    cityNameResultErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    cityNameResultErrorMsg.innerText = "Veuillez renseigner 2 caractères au moins, sans chiffres.";
     formValidation.city = false;
   }
 
@@ -244,10 +245,10 @@ function onSubmit(event) {
   let emailResultErrorMsg = emailValue.nextElementSibling;
 
   if (emailRegExp.test(emailValue.value)) {
-    emailResultErrorMsg.innerHTML = "";
+    emailResultErrorMsg.innerText = "";
     formValidation.email = true;
   } else {
-    emailResultErrorMsg.innerHTML = "Veuillez renseigner ce champ.";
+    emailResultErrorMsg.innerText = "Veuillez renseigner une adresse mail valide. ex: abc@def.com";
     formValidation.email = false;
   }
   if (
@@ -279,7 +280,6 @@ function getPost() {
       //Boucle pour pousser les informations dans [local storage]
       idProducts.push(produitLocalStorage[p]._id); //On pousse les infos "idProducts" sur [local storage]
     }
-    console.log(idProducts);
 
     const order = {
       contact: {
@@ -303,7 +303,6 @@ function getPost() {
     fetch("http://localhost:3000/api/products/order", options)
       .then((response) => response.json())
       .then((data) => {
-        console.table(data);
         localStorage.clear();
         localStorage.setItem("orderId", data.orderId);
 
