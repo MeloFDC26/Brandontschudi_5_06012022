@@ -1,6 +1,6 @@
 console.log("Cart");
 
-// Initialisation du local storage
+// Initialisation du local storage et récupération de son contenu
 let produitLocalStorage = JSON.parse(localStorage.getItem("produit") || "[]");
 
 // Si le panier est vide
