@@ -21,7 +21,7 @@ function displayProducts(products) {
 
     // Création "élément <a>"
     let productLink = document.createElement("a");
-    itemsSection.appendChild(productLink);
+    itemsSection.appendChild(productLink); //Ajout entant qu'enfant à productLink
     productLink.href = `product.html?id=${products[product]._id}`;
 
     // Création "élément <article>"
