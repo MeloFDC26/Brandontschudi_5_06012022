@@ -1,9 +1,12 @@
-console.log('Confirmation')
+console.log('Confirmation');
+const str = window.location.href;
+const url = new URL(str);
+const orderId = url.searchParams.get("id");
 
 function main(){
     const idNode = document.getElementById("orderId");
-    idNode.innerText = localStorage.getItem("orderId");
-    console.log(localStorage.getItem("orderId"));
+    idNode.innerText = orderId;
+    console.log(orderId);
     localStorage.clear();
 }
 main();

@@ -8,7 +8,7 @@ function getCart() {
   if (produitLocalStorage === 0) {
     const emptyCart = `<p>Le panier est vide</p>`;
     const positionEmptyCart = document.getElementById("cart__items");
-    positionEmptyCart.innerHTML = emptyCart;
+    positionEmptyCart.innerText = emptyCart;
   }
   // Si au moins un article est dans le panier
   else {
@@ -50,7 +50,7 @@ function getCart() {
       // Création de p (prix) dans "cart__item__content__description"
       let productCartPrice = document.createElement("p");
       productCartContent.appendChild(productCartPrice);
-      productCartPrice.innerText = produit.price + "€";
+      productCartPrice.innerText = `${produit.price}` + "€";
 
       // Création de la div "cart__item__content__settings"
       let productCartSettings = document.createElement("div");
@@ -304,9 +304,7 @@ function getPost() {
       .then((response) => response.json())
       .then((data) => {
         localStorage.clear();
-        localStorage.setItem("orderId", data.orderId);
-
-        document.location.href = "confirmation.html";
+        document.location.href = `confirmation.html?id=${data.orderId}`;
       })
       .catch((err) => {
         alert("Problème avec fetch : " + err.message);
