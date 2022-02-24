@@ -65,10 +65,7 @@ function addToCart(article) {
 
   //Ecouter le panier avec 2 conditions couleur non nulle et quantité entre 1 et 100
   btnEnvoyerPanier.addEventListener("click", (event) => {
-    if (
-      quantityPicked.value > 0 &&
-      quantityPicked.value <= 100
-    ) {
+    if (quantityPicked.value > 0 && quantityPicked.value <= 100) {
       //Recupération du choix de la couleur
       let choixCouleur = colorPicked.value;
 
@@ -92,30 +89,40 @@ function addToCart(article) {
       //Si le panier comporte déjà au moins 1 article
       if (produitLocalStorage) {
         const resultFind = produitLocalStorage.find(
-          (el) =>  el._id === idProduct && el.couleurProduit == choixCouleur);
+          (el) => el._id === idProduct && el.couleurProduit == choixCouleur
+        );
         //Si le produit commandé est déjà dans le panier
         if (resultFind) {
-          let newQuantite = parseInt(choixQuantite) + parseInt(resultFind.quantiteProduit);
+          let newQuantite =
+            parseInt(choixQuantite) + parseInt(resultFind.quantiteProduit);
           resultFind.quantiteProduit = newQuantite;
           localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
           popupConfirmation();
-        //Si le produit commandé n'est pas dans le panier
+          //Si le produit commandé n'est pas dans le panier
         } else {
           produitLocalStorage.push({
             quantiteProduit: choixQuantite,
             couleurProduit: choixCouleur,
-            ...article
+            _id: article._id,
+            altTxt: article.altTxt,
+            name: article.name,
+            description: article.description,
+            imageUrl: article.imageUrl,
           });
           localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
           popupConfirmation();
         }
-      //Si le panier est vide
+        //Si le panier est vide
       } else {
         produitLocalStorage = [];
         produitLocalStorage.push({
           quantiteProduit: choixQuantite,
           couleurProduit: choixCouleur,
-          ...article
+          _id: article._id,
+          altTxt: article.altTxt,
+          name: article.name,
+          description: article.description,
+          imageUrl: article.imageUrl,
         });
         localStorage.setItem("produit", JSON.stringify(produitLocalStorage));
         popupConfirmation();
