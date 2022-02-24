@@ -5,90 +5,105 @@ let produitLocalStorage = JSON.parse(localStorage.getItem("produit") || "[]");
 
 // Si le panier est vide
 function getCart() {
-  if (produitLocalStorage === 0) {
-    const emptyCart = `<p>Le panier est vide</p>`;
+  if (produitLocalStorage.length === 0) {
+    const emptyCart = `Le panier est vide`;
     const positionEmptyCart = document.getElementById("cart__items");
     positionEmptyCart.innerText = emptyCart;
   }
   // Si au moins un article est dans le panier
   else {
-    // Boucle pour créer les éléments
-    for (let produit of produitLocalStorage) {
-      // Création de l'article "cart__item"
-      let productCartArticle = document.createElement("article");
-      document.getElementById("cart__items").appendChild(productCartArticle);
-      productCartArticle.className = "cart__item";
-      productCartArticle.setAttribute("data-id", produit.idProduit);
-      productCartArticle.setAttribute("data-color", produit.colors);
+    getProducts().then(function (products) {
+      // Boucle pour créer les éléments
+      for (let produit of produitLocalStorage) {
+        const foundProduct = products.find(function(product) {
+          return product._id == produit._id
+        })
+        if(foundProduct) {
+          produit.price = foundProduct.price;
+        }else {
+          console.error('Produit non trouvé !');
+          break
+        }
+        // Création de l'article "cart__item"
+        let productCartArticle = document.createElement("article");
+        document.getElementById("cart__items").appendChild(productCartArticle);
+        productCartArticle.className = "cart__item";
+        productCartArticle.setAttribute("data-id", produit.idProduit);
+        productCartArticle.setAttribute("data-color", produit.colors);
 
-      // Création de la div img "cart__item__img"
-      let productCartImgDiv = document.createElement("div");
-      productCartArticle.appendChild(productCartImgDiv);
-      productCartImgDiv.className = "cart__item__img";
+        // Création de la div img "cart__item__img"
+        let productCartImgDiv = document.createElement("div");
+        productCartArticle.appendChild(productCartImgDiv);
+        productCartImgDiv.className = "cart__item__img";
 
-      // Création de l'img dans sa div
-      let productCartImg = document.createElement("img");
-      productCartImgDiv.appendChild(productCartImg);
-      productCartImg.src = produit.imageUrl;
-      productCartImg.alt = produit.altTxt;
+        // Création de l'img dans sa div
+        let productCartImg = document.createElement("img");
+        productCartImgDiv.appendChild(productCartImg);
+        productCartImg.src = produit.imageUrl;
+        productCartImg.alt = produit.altTxt;
 
-      // Création de la div "cart__item__content"
-      let productCartContent = document.createElement("div");
-      productCartContent.className = "cart__item__content";
-      productCartArticle.appendChild(productCartContent);
+        // Création de la div "cart__item__content"
+        let productCartContent = document.createElement("div");
+        productCartContent.className = "cart__item__content";
+        productCartArticle.appendChild(productCartContent);
 
-      // Création du titre h2 dans "cart__item__content__description"
-      let productCartTitle = document.createElement("h2");
-      productCartContent.appendChild(productCartTitle);
-      productCartTitle.innerText = produit.name;
+        // Création du titre h2 dans "cart__item__content__description"
+        let productCartTitle = document.createElement("h2");
+        productCartContent.appendChild(productCartTitle);
+        productCartTitle.innerText = produit.name;
 
-      // Création de p (couleur) dans "cart__item__content__description"
-      let productCartColor = document.createElement("p");
-      productCartContent.appendChild(productCartColor);
-      productCartColor.innerText = produit.couleurProduit;
+        // Création de p (couleur) dans "cart__item__content__description"
+        let productCartColor = document.createElement("p");
+        productCartContent.appendChild(productCartColor);
+        productCartColor.innerText = produit.couleurProduit;
 
-      // Création de p (prix) dans "cart__item__content__description"
-      let productCartPrice = document.createElement("p");
-      productCartContent.appendChild(productCartPrice);
-      productCartPrice.innerText = `${produit.price}` + "€";
+        // Création de p (prix) dans "cart__item__content__description"
+        let productCartPrice = document.createElement("p");
+        productCartContent.appendChild(productCartPrice);
+        productCartPrice.innerText = `${produit.price}` + "€";
 
-      // Création de la div "cart__item__content__settings"
-      let productCartSettings = document.createElement("div");
-      productCartSettings.className = "cart__item__content__settings";
-      productCartArticle.appendChild(productCartSettings);
+        // Création de la div "cart__item__content__settings"
+        let productCartSettings = document.createElement("div");
+        productCartSettings.className = "cart__item__content__settings";
+        productCartArticle.appendChild(productCartSettings);
 
-      // Création de la div "cart__item__content__settings__quantity"
-      let productCartSettingsQuantity = document.createElement("div");
-      productCartSettingsQuantity.className =
-        "cart__item__content__settings__quantity";
-      productCartSettings.appendChild(productCartSettingsQuantity);
+        // Création de la div "cart__item__content__settings__quantity"
+        let productCartSettingsQuantity = document.createElement("div");
+        productCartSettingsQuantity.className =
+          "cart__item__content__settings__quantity";
+        productCartSettings.appendChild(productCartSettingsQuantity);
 
-      // Création de p (quantité) dans "cart__item__content__settings__quantity"
-      let productCartQuantity = document.createElement("p");
-      productCartSettingsQuantity.appendChild(productCartQuantity);
-      productCartQuantity.innerText = "Qté : ";
+        // Création de p (quantité) dans "cart__item__content__settings__quantity"
+        let productCartQuantity = document.createElement("p");
+        productCartSettingsQuantity.appendChild(productCartQuantity);
+        productCartQuantity.innerText = "Qté : ";
 
-      // Création de l'input (choix quantité) dans "cart__item__content__settings__quantity"
-      let productCartInputQte = document.createElement("input");
-      productCartSettingsQuantity.appendChild(productCartInputQte);
-      productCartInputQte.className = "itemQuantity";
-      productCartInputQte.setAttribute("type", "number");
-      productCartInputQte.setAttribute("name", "itemQuantity");
-      productCartInputQte.setAttribute("min", "1");
-      productCartInputQte.setAttribute("max", "100");
-      productCartInputQte.setAttribute("value", produit.quantiteProduit);
+        // Création de l'input (choix quantité) dans "cart__item__content__settings__quantity"
+        let productCartInputQte = document.createElement("input");
+        productCartSettingsQuantity.appendChild(productCartInputQte);
+        productCartInputQte.className = "itemQuantity";
+        productCartInputQte.setAttribute("type", "number");
+        productCartInputQte.setAttribute("name", "itemQuantity");
+        productCartInputQte.setAttribute("min", "1");
+        productCartInputQte.setAttribute("max", "100");
+        productCartInputQte.setAttribute("value", produit.quantiteProduit);
 
-      // Création de la div "cart__item__content__settings__delete"
-      let productCartDivDelete = document.createElement("div");
-      productCartSettings.appendChild(productCartDivDelete);
-      productCartDivDelete.className = "cart__item__content__settings__delete";
+        // Création de la div "cart__item__content__settings__delete"
+        let productCartDivDelete = document.createElement("div");
+        productCartSettings.appendChild(productCartDivDelete);
+        productCartDivDelete.className =
+          "cart__item__content__settings__delete";
 
-      // Création de p dans la div "cart__item__content__settings__delete"
-      let productCartDelete = document.createElement("p");
-      productCartDivDelete.appendChild(productCartDelete);
-      productCartDelete.className = "deleteItem";
-      productCartDelete.innerText = "Supprimer";
-    }
+        // Création de p dans la div "cart__item__content__settings__delete"
+        let productCartDelete = document.createElement("p");
+        productCartDivDelete.appendChild(productCartDelete);
+        productCartDelete.className = "deleteItem";
+        productCartDelete.innerText = "Supprimer";
+      }
+      modifQuantity();
+      productCartDelete();
+      getTotals();
+    });
   }
 }
 getCart();
@@ -116,7 +131,7 @@ function getTotals() {
   productCartTotalPrice.innerText = totalPrice; //Et on modifie le contenu de #totalPrice par le résultat de l'addition
   console.log(totalPrice);
 }
-getTotals();
+
 
 // Modification de la quantité d'un article dans le panier (r est une variable locale)
 function modifQuantity() {
@@ -146,7 +161,7 @@ function modifQuantity() {
     });
   }
 }
-modifQuantity(); //Grâce à la fonction getTotals() et le refresh rapide, le calcul du prix total est actualisé directement
+ //Grâce à la fonction getTotals() et le refresh rapide, le calcul du prix total est actualisé directement
 
 // Suppression d'un produit du panier (d est une variable locale)
 function productCartDelete() {
@@ -172,7 +187,7 @@ function productCartDelete() {
     });
   }
 }
-productCartDelete();
+
 
 //Validation du formulaire avec RegExp
 let form = document.querySelector(".cart__order__form");
@@ -186,11 +201,10 @@ function onSubmit(event) {
     adress: true,
     city: true,
   };
-  
+
   //firstName et LastName on veut 2 caractères min sans caractères spéciaux ni chiffres
-  const firstLastNamesRegex = 
-    /^[a-zA-Z-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/
-  ;
+  const firstLastNamesRegex =
+    /^[a-zA-Z-éëàèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇÆæœ]{2,}$/;
   const firstNameValue = document.getElementById("firstName");
   let firstNameErrorMsg = firstNameValue.nextElementSibling;
 
@@ -198,7 +212,8 @@ function onSubmit(event) {
     firstNameErrorMsg.innerText = "";
     formValidation.first = true;
   } else {
-    firstNameErrorMsg.innerText = "Veuillez renseigner 2 caractères au moins, sans chiffres.";
+    firstNameErrorMsg.innerText =
+      "Veuillez renseigner 2 caractères au moins, sans chiffres.";
     formValidation.first = false;
   }
   const lastNameValue = document.getElementById("lastName");
@@ -208,7 +223,8 @@ function onSubmit(event) {
     lastNameErrorMsg.innerText = "";
     formValidation.last = true;
   } else {
-    lastNameErrorMsg.innerText = "Veuillez renseigner 2 caractères au moins, sans chiffres.";
+    lastNameErrorMsg.innerText =
+      "Veuillez renseigner 2 caractères au moins, sans chiffres.";
     formValidation.last = false;
   }
 
@@ -223,7 +239,8 @@ function onSubmit(event) {
     addressErrorMsg.innerText = "";
     formValidation.adress = true;
   } else {
-    addressErrorMsg.innerText = "Veuillez renseigner une adresse valide. ex: 2 rue Pierre Julien";
+    addressErrorMsg.innerText =
+      "Veuillez renseigner une adresse valide. ex: 2 rue Pierre Julien";
     formValidation.adress = false;
   }
   const cityNameValue = document.getElementById("city");
@@ -233,7 +250,8 @@ function onSubmit(event) {
     cityNameResultErrorMsg.innerText = "";
     formValidation.city = true;
   } else {
-    cityNameResultErrorMsg.innerText = "Veuillez renseigner 2 caractères au moins, sans chiffres.";
+    cityNameResultErrorMsg.innerText =
+      "Veuillez renseigner 2 caractères au moins, sans chiffres.";
     formValidation.city = false;
   }
 
@@ -248,7 +266,8 @@ function onSubmit(event) {
     emailResultErrorMsg.innerText = "";
     formValidation.email = true;
   } else {
-    emailResultErrorMsg.innerText = "Veuillez renseigner une adresse mail valide. ex: abc@def.com";
+    emailResultErrorMsg.innerText =
+      "Veuillez renseigner une adresse mail valide. ex: abc@def.com";
     formValidation.email = false;
   }
   if (
@@ -310,4 +329,15 @@ function getPost() {
         alert("Problème avec fetch : " + err.message);
       });
   });
+}
+
+//Je dois interroger le serveur pour récupérer la liste des produits
+function getProducts() {
+  return fetch("http://localhost:3000/api/products")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (products) {
+      return products;
+    });
 }
