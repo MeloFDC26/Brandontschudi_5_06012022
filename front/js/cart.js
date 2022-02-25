@@ -86,7 +86,7 @@ function getCart() {
         productCartInputQte.setAttribute("name", "itemQuantity");
         productCartInputQte.setAttribute("min", "1");
         productCartInputQte.setAttribute("max", "100");
-        productCartInputQte.setAttribute("value", produit.quantiteProduit);
+        productCartInputQte.setAttribute("value", `${produit.quantiteProduit}`);
 
         // Création de la div "cart__item__content__settings__delete"
         let productCartDivDelete = document.createElement("div");
@@ -135,25 +135,17 @@ function getTotals() {
 
 // Modification de la quantité d'un article dans le panier (r est une variable locale)
 function modifQuantity() {
-  let inputQuantity = document.querySelectorAll(".itemQuantity"); //On récupère la classe .itemQuantity
+  let inputQuantity = document.getElementsByClassName("itemQuantity"); //On récupère la classe .itemQuantity
+  console.log(inputQuantity);
 
   // Boucle pour changer la quantité et modifier le prix
-  for (let r = 0; r < inputQuantity.length; r++) {
+  for (let r = 0; r < produitLocalStorage.length; r++) {
     //(r++ = rendu avant incrémentation, ++r rend après incrémentation)
     inputQuantity[r].addEventListener("change", (event) => {
       //On écoute le changement de valeur dans l'input
       event.preventDefault();
-
-      // On récupère l'élément à modifier dans [local storage]
-      let quantityModif = produitLocalStorage[r].quantiteProduit; // La quantité
-      let qttModifValue = inputQuantity[r].valueAsNumber; // La valeur de l'input
-      const resultFind = produitLocalStorage.find(
-        (el) => el.qttModifValue !== quantityModif
-      ); // On vérifie que qttModifValue est strictement inégale à quantityModif
-
-      resultFind.quantiteProduit = qttModifValue; //On modifie la quantité initiale par la valeur modifiée
-      produitLocalStorage[r].quantiteProduit = resultFind.quantiteProduit; // On modifie la quantité dans le [local storage]
-
+      produitLocalStorage[r].quantiteProduit = event.target.value; // On modifie la quantité initiale par la valeur modifiée
+     
       localStorage.setItem("produit", JSON.stringify(produitLocalStorage)); //On met à jour le [local storage]
 
       // refresh rapide pour afficher instantanément le résultat (quantité et prix totaux)
